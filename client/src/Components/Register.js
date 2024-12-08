@@ -9,6 +9,7 @@ import {
   Col,
 } from "reactstrap";
 import { useState } from "react";
+
 import { userSchemaValidation } from "../Validations/UserValidations";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -17,7 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addUser, deleteUser, updateUser } from "../Features/UserSlice";
 import { registerUser } from "../Features/UserSlice";
 import { useNavigate, Link } from "react-router-dom";
-
+import logo from "../images/logo.png";
 const Register = () => {
   //Retrieve the current value of the state and assign it to a variable.
   const userList = useSelector((state) => state.users.value);
@@ -52,7 +53,7 @@ const Register = () => {
       console.log("Form Data", data);
       alert("Validation all good.");
       dispatch(registerUser(userData)); // Dispatch an action to add a new user by passing the user data to the Redux store
-      navigate("/login"); //redirect to login component
+      navigate("/Completeregister"); //redirect to login component
     } catch (error) {
       console.log("Error.");
     }
@@ -72,76 +73,77 @@ const Register = () => {
   };
 
   return (
-    <div>
-      {" "}
-      <Container>
-        <Form className="box" onSubmit={handleSubmit(onSubmit)}>
+    <div className="img">
+      <br></br>
+      <div className="loginnn-container">
+        <Form onSubmit={handleSubmit(onSubmit)} className="boxregister">
           <Row>
-            <Col md={5}></Col>
-
-            <Col md={7} className="form-groupsnnn">
-              <FormGroup>
-                <Label for="name">Name</Label>
-                <Input
-                  type="text"
-                  className="form-control"
+            <Col md={5}>
+              <img src={logo} className="styledd-image"></img>
+              <p className="ph">
+                Be part of the Homehero family to get home services.
+              </p>
+            </Col>
+            <Col md={7}>
+              <h1 className="h22">Register</h1>
+              <FormGroup className="form-groupsn">
+                <Label>Name</Label>
+                <input
                   id="name"
-                  placeholder="Enter your name..."
+                  name="name"
+                  type="text"
                   {...register("name", {
                     onChange: (e) => setname(e.target.value),
                   })}
-                />
+                ></input>
                 <p className="error">{errors.name?.message}</p>
               </FormGroup>
 
-              <FormGroup>
-                <Label for="email">Email</Label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  id="email"
-                  placeholder="Enter your email..."
+              <FormGroup className="form-groupsn">
+                <Label>Email</Label>
+                <input
+                  id="exampleEmail"
+                  name="email"
+                  type="email"
                   {...register("email", {
                     onChange: (e) => setemail(e.target.value),
                   })}
-                />
+                ></input>
                 <p className="error">{errors.email?.message}</p>
               </FormGroup>
-
-              <FormGroup>
-                <Label for="password">Password</Label>
-                <Input
+              <FormGroup className="form-groupsn">
+                <Label>Password</Label>
+                <input
+                  id="examplePassword"
+                  name="Password"
                   type="password"
-                  className="form-control"
-                  id="password"
-                  placeholder="Enter your password..."
                   {...register("password", {
                     onChange: (e) => setpassword(e.target.value),
                   })}
-                />
+                ></input>
                 <p className="error">{errors.password?.message}</p>
               </FormGroup>
-
-              <FormGroup>
-                <Label for="confirmPassword">Confirm Password</Label>
-                <Input
+              <FormGroup className="form-groupsn">
+                <Label>confirm Password</Label>
+                <input
+                  id="examplePassword"
+                  name="ConforimPassword"
                   type="password"
-                  className="form-control"
-                  id="confirmPassword"
-                  placeholder="Confirm your password..."
                   {...register("confirmPassword", {
                     onChange: (e) => setconfirmPassword(e.target.value),
                   })}
-                />
+                ></input>
                 <p className="error">{errors.confirmPassword?.message}</p>
               </FormGroup>
-              <FormGroup>
-                <button className="lbutton">Register</button>
-              </FormGroup>
+              <Button className="loginbutton">Register</Button>
+              <p className="ph">
+                Do you already have an Account?
+                <Link to="/Login">Login now</Link>
+              </p>
             </Col>
           </Row>
         </Form>
-      </Container>
+      </div>
     </div>
   );
 };
