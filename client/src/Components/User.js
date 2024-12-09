@@ -1,9 +1,10 @@
 import user from "../images/user.png";
 import { useSelector } from "react-redux";
 
-const User = () => {
-  const user = useSelector((state) => state.users.user);
+const User = (userData) => {
+  const user = userData.userData;
   const picURL = "http://localhost:3001/uploads/" + user.profilePic;
+
   console.log(picURL);
 
   return (

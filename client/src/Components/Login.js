@@ -40,11 +40,14 @@ const Login = () => {
   useEffect(() => {
     if (isError) {
       navigate("/login");
+    } else if (isSuccess) {
+      if (user && user.userType === "user") {
+        navigate("/");
+      } else {
+        navigate("/manage");
+      }
     }
-    if (isSuccess) {
-      navigate("/");
-    }
-  }, [user, isError, isSuccess]);
+  }, [user, isError, isSuccess, navigate]);
 
   return (
     <div className="img">

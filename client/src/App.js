@@ -14,6 +14,10 @@ import Aboutus from "./Components/Aboutus";
 import Contactus from "./Components/Contactus";
 import Completeregister from "./Components/Completeregister";
 import Logout from "./Components/Logout";
+import Manage from "./Components/Manage";
+import ManageProfile from "./Components/ManageProfile";
+import AddServices from "./Components/AddServices";
+import ServerMap from "./Components/ServerMap";
 
 const App = () => {
   const email = useSelector((state) => state.users.user.email);
@@ -30,6 +34,8 @@ const App = () => {
         </Row>
         <Row className="main">
           <Routes>
+            <Route path="/ServerMap" element={<ServerMap />}></Route>
+
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/logout" element={<Logout />}></Route>
@@ -39,18 +45,18 @@ const App = () => {
             <Route path="/post" element={<Posts />}></Route>
             <Route path="/About" element={<Aboutus />}></Route>
             <Route path="/Contactus" element={<Contactus />}></Route>
+            <Route path="/manage" element={<Manage />}></Route>
+            <Route
+              path="/manageProfile/:id"
+              element={<ManageProfile />}
+            ></Route>
+            <Route path="/AddServices" element={<AddServices />}></Route>
+
             <Route
               path="/Completeregister"
               element={<Completeregister />}
             ></Route>
           </Routes>
-        </Row>
-        <Row>
-          {email ? (
-            <>
-              <Footer />
-            </>
-          ) : null}
         </Row>
       </Router>
     </Container>

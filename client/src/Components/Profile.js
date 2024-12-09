@@ -85,7 +85,7 @@ const Profile = () => {
       <br></br>
       <Row>
         <Col md={3}>
-          <User />
+          <User userData={user} />
 
           <Location />
           <br></br>

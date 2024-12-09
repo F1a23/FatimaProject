@@ -10,6 +10,7 @@ import { dirname } from "path";
 import fs from "fs";
 import path from "path";
 import * as ENV from "./config.js";
+import ServiceModel from "./Models/ServiceModel.js";
 
 const app = express();
 app.use(express.json());
@@ -246,7 +247,6 @@ app.put(
     }
   }
 );
-
 //GET API - getUsers
 
 app.get("/getUsers", async (req, res) => {
@@ -258,6 +258,116 @@ app.get("/getUsers", async (req, res) => {
     const userPost = await UserModel.countDocuments({});
 
     res.send({ users: users, count: userPost });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
+// delete users
+app.delete("/deleteUser/:id/", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const user = await UserModel.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ msg: "User deleted successfully" });
+  } catch (error) {
+    console.error(error);
+
+    res
+
+      .status(500)
+
+      .json({ error: "An error occurred while deleting the user" });
+  }
+});
+//GET API - for retrieving a single user
+
+app.get("/getUser/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    // Find the user by _id
+
+    const user = await UserModel.findById(id);
+
+    res.send({ user: user });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
+
+app.put(
+  "/updateUserProfile/:email/",
+
+  upload.single("profilePic"), // Middleware to handle single file upload
+
+  async (req, res) => {
+    const email = req.params.email;
+
+    const name = req.body.name;
+
+    const password = req.body.password;
+
+    const userType = req.body.userType;
+
+    try {
+      // Find the user by email in the database
+
+      const userToUpdate = await UserModel.findOne({ email: email });
+      // Update user's name
+
+      userToUpdate.name = name;
+
+      //if there is a value of userType in the request assign the new value
+
+      if (userType) userToUpdate.userType = userType;
+    } catch (error) {
+      console.error(error);
+
+      res.status(500).json({ error: "An error occurred" });
+    }
+  }
+);
+//add service from admin
+app.post("/addService", async (req, res) => {
+  try {
+    const serviceId = req.body.serviceId;
+    const serviceType = req.body.serviceType;
+    const numberofWorker = req.body.numberofWorker;
+    const serviceInfo = req.body.serviceInfo;
+    const price = req.body.price;
+
+    const service = new ServiceModel({
+      serviceId: serviceId,
+      serviceType: serviceType,
+      numberofWorker: numberofWorker,
+      serviceInfo: serviceInfo,
+      price: price,
+    });
+
+    await service.save();
+    res.send({ service: service, msg: "Added." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
+
+app.get("/getServices", async (req, res) => {
+  try {
+    const services = await ServiceModel.find({}).sort({ name: 1 });
+
+    const servicePost = await ServiceModel.countDocuments({});
+
+    res.send({ services: services, count: servicePost });
   } catch (err) {
     console.error(err);
 
